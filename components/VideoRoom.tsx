@@ -61,6 +61,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [pseudo, setPseudo] = useState('');
+  const [askPseudo, setAskPseudo] = useState(false);
   const [encryptionKey, setEncryptionKey] = useState<string>('');
   const [isConnected, setIsConnected] = useState(false);
   
@@ -76,7 +77,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
   useEffect(() => {
     const savedPseudo = localStorage.getItem('communecast-pseudo');
     if (!savedPseudo) {
-      router.push('/');
+      setAskPseudo(true);
       return;
     }
     setPseudo(savedPseudo);
@@ -384,6 +385,39 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
 
   const videoCount = peers.size + (localStream ? 1 : 0);
   const gridClass = videoCount === 1 ? 'single' : videoCount === 2 ? 'dual' : 'multiple';
+
+  if (askPseudo) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="bg-zinc-900 p-8 rounded-lg shadow-lg w-full max-w-sm border border-red-700">
+          <h2 className="text-xl font-bold text-white mb-4">Choisissez un pseudo pour rejoindre l&apos;assemblée</h2>
+          <form onSubmit={e => {
+            e.preventDefault();
+            if (pseudo.trim()) {
+              localStorage.setItem('communecast-pseudo', pseudo.trim());
+              setAskPseudo(false);
+            }
+          }}>
+            <input
+              type="text"
+              className="w-full p-2 rounded bg-black border border-red-700 text-white mb-4"
+              placeholder="Votre pseudo révolutionnaire..."
+              value={pseudo}
+              onChange={e => setPseudo(e.target.value)}
+              autoFocus
+              required
+            />
+            <button
+              type="submit"
+              className="w-full bg-[#E10600] text-white font-bold py-2 rounded hover:bg-black hover:text-[#E10600] border-2 border-black transition"
+            >
+              Rejoindre la salle
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen anarcho-flag flex flex-col">
