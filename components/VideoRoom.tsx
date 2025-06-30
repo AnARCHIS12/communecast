@@ -118,7 +118,10 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
   }, [chatMessages]);
 
   const initializeSocket = () => {
-    const socketConnection = io('https://communecast.onrender.com');
+    const socketConnection = io('https://communecast.onrender.com', {
+      transports: ['websocket', 'polling'],
+      withCredentials: true
+    });
     
     socketConnection.on('connect', () => {
       setIsConnected(true);
@@ -127,6 +130,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
 
     // Écoute du nombre d'utilisateurs dans la salle
     socketConnection.on('room-user-count', (data) => {
+      console.log('[room-user-count]', data); // Ajout log debug
       if (data.roomId === roomId) setUserCount(data.count);
     });
 
