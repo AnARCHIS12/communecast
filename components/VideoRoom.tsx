@@ -74,25 +74,38 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
     { urls: 'stun:stun1.l.google.com:19302' }
   ];
 
+  // Nouvelle logique pour garantir que le pseudo est bien défini avant toute initialisation
   useEffect(() => {
     const savedPseudo = localStorage.getItem('communecast-pseudo');
     if (!savedPseudo) {
       setAskPseudo(true);
+      setPseudo('');
       return;
     }
     setPseudo(savedPseudo);
-    
-    // Generate encryption key pair for this session
+    setAskPseudo(false);
+  }, [roomId]);
+
+  // Initialisation socket et media UNIQUEMENT quand pseudo est défini
+  useEffect(() => {
+    if (!pseudo || askPseudo) return;
+    // Génère la clé d'encryptage pour cette session
     const keyPair = generateKeyPair();
     setEncryptionKey(keyPair.privateKey);
-    
-    initializeSocket();
-    getUserMedia();
+    getUserMedia(); // D'abord obtenir le flux local
+    // L'initialisation du socket attendra que le flux local soit prêt
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pseudo, roomId, askPseudo]);
 
+  // Initialiser le socket UNIQUEMENT quand le flux local est prêt
+  useEffect(() => {
+    if (!pseudo || askPseudo || !localStream) return;
+    initializeSocket();
     return () => {
       cleanup();
     };
-  }, [roomId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pseudo, roomId, askPseudo, localStream]);
 
   useEffect(() => {
     if (localVideoRef.current && localStream) {
