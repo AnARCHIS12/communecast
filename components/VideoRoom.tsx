@@ -118,7 +118,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
   }, [chatMessages]);
 
   const initializeSocket = () => {
-    const socketConnection = io(process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001');
+    const socketConnection = io('https://communecast.onrender.com');
     
     socketConnection.on('connect', () => {
       setIsConnected(true);
