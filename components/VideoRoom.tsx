@@ -53,6 +53,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
   const [peers, setPeers] = useState<Map<string, Peer>>(new Map());
+  const [userCount, setUserCount] = useState(1);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [isAudioOn, setIsAudioOn] = useState(true);
   const [isScreenSharing, setIsScreenSharing] = useState(false);
@@ -108,6 +109,11 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
     socketConnection.on('connect', () => {
       setIsConnected(true);
       socketConnection.emit('join-room', { roomId, pseudo });
+    });
+
+    // Écoute du nombre d'utilisateurs dans la salle
+    socketConnection.on('room-user-count', (data) => {
+      if (data.roomId === roomId) setUserCount(data.count);
     });
 
     socketConnection.on('user-joined', (data: { id: string; pseudo: string }) => {
@@ -391,7 +397,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
             <h1 className="text-lg font-extrabold text-white drop-shadow-lg" style={{textShadow:'2px 2px 8px #000'}}>Assemblée&nbsp;: <span className="text-white" style={{textShadow:'2px 2px 8px #000'}}>{roomId}</span></h1>
             <div className="flex items-center space-x-2 text-sm text-white" style={{textShadow:'1px 1px 6px #000'}}>
               <Users className="w-4 h-4 text-white" />
-              <span>{peers.size + 1} révolutionnaire(s)</span>
+              <span>{userCount} révolutionnaire(s)</span>
               {isConnected && (
                 <Badge variant="outline" className="border-white text-white bg-red-700/80 encrypted-indicator">
                   <Shield className="w-3 h-3 mr-1 text-white" />

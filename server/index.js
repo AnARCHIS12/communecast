@@ -67,6 +67,9 @@ io.on('connection', (socket) => {
     // Add user to room
     room.add(socket.id);
     
+    // Notifier tous les clients du nombre d'utilisateurs
+    io.to(roomId).emit('room-user-count', { roomId, count: room.size });
+    
     console.log(`Room ${roomId} now has ${room.size} users`);
   });
 
@@ -128,6 +131,8 @@ io.on('connection', (socket) => {
         } else {
           // Notify other users in the room
           socket.to(roomId).emit('user-left', socket.id);
+          // Notifier tous les clients du nombre d'utilisateurs
+          io.to(roomId).emit('room-user-count', { roomId, count: room.size });
           console.log(`Room ${roomId} now has ${room.size} users`);
         }
       }
