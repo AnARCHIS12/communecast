@@ -12,51 +12,70 @@ const Logo: React.FC<LogoProps> = ({ className = "h-8 w-auto" }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* Revolutionary star */}
-      <path
-        d="M25 5l4.5 14h14.7l-11.9 8.6 4.5 14L25 33l-11.8 8.6 4.5-14L5.8 19h14.7L25 5z"
-        fill="#8B0000"
-        stroke="#FFD700"
-        strokeWidth="1"
+      {/* Cercle anarchiste */}
+      <circle
+        cx="25"
+        cy="30"
+        r="20"
+        fill="none"
+        stroke="#DC2626"
+        strokeWidth="3"
       />
       
-      {/* Text "CommuneCast" */}
+      {/* A anarchiste */}
+      <path
+        d="M15 40 L25 15 L35 40 M19 32 L31 32"
+        stroke="#DC2626"
+        strokeWidth="3"
+        fill="none"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      
+      {/* Texte "CommuneCast" */}
       <text
-        x="50"
-        y="20"
-        fontSize="14"
+        x="55"
+        y="25"
+        fontSize="16"
         fontWeight="bold"
-        fill="#8B0000"
+        fill="#DC2626"
         fontFamily="Inter, sans-serif"
       >
         CommuneCast
       </text>
       
-      {/* Subtitle */}
+      {/* Sous-titre anarchiste */}
       <text
-        x="50"
-        y="35"
-        fontSize="8"
-        fill="#FFD700"
+        x="55"
+        y="40"
+        fontSize="9"
+        fill="#B91C1C"
         fontFamily="Inter, sans-serif"
+        fontWeight="500"
       >
-        LIBRE • CHIFFRÉ • DÉCENTRALISÉ
+        LIBRE • AUTONOME • SOLIDAIRE
       </text>
       
-      {/* Revolutionary flame */}
+      {/* Étoile anarchiste */}
       <path
-        d="M170 15c2-5 6-8 8-3 1 3-1 6-3 8 4-2 8 1 7 5-1 4-5 5-8 3 1 4-2 7-6 6-3-1-4-5-2-8-4 1-7-2-6-6 1-3 5-4 7-2-1-2 1-4 3-3z"
-        fill="#8B0000"
+        d="M175 20l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z"
+        fill="#DC2626"
       />
       
-      {/* Connection lines representing P2P */}
-      <g stroke="#8B0000" strokeWidth="1" opacity="0.6">
-        <circle cx="15" cy="50" r="2" fill="#8B0000" />
-        <circle cx="35" cy="50" r="2" fill="#8B0000" />
-        <circle cx="25" cy="55" r="2" fill="#8B0000" />
-        <line x1="15" y1="50" x2="35" y2="50" />
-        <line x1="15" y1="50" x2="25" y2="55" />
-        <line x1="35" y1="50" x2="25" y2="55" />
+      {/* Flamme révolutionnaire */}
+      <path
+        d="M185 35c1-3 3-5 5-2 1 2-1 4-2 5 2-1 5 1 4 3-1 2-3 3-5 2 1 2-1 4-3 3-2-1-2-3-1-5-2 1-4-1-3-3 1-2 3-2 4-1-1-1 1-2 1-2z"
+        fill="#B91C1C"
+      />
+      
+      {/* Réseau P2P anarchiste */}
+      <g stroke="#DC2626" strokeWidth="2" opacity="0.8">
+        <circle cx="12" cy="50" r="2" fill="#DC2626" />
+        <circle cx="25" cy="55" r="2" fill="#DC2626" />
+        <circle cx="38" cy="50" r="2" fill="#DC2626" />
+        <line x1="12" y1="50" x2="25" y2="55" />
+        <line x1="25" y1="55" x2="38" y2="50" />
+        <line x1="38" y1="50" x2="12" y2="50" />
       </g>
     </svg>
   );

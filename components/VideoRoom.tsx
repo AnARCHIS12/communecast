@@ -21,7 +21,9 @@ import {
   Lock,
   Users,
   Copy,
-  X
+  X,
+  Shield,
+  Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { encryptMessage, decryptMessage, generateKeyPair } from '@/lib/crypto';
@@ -374,20 +376,20 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
   const gridClass = videoCount === 1 ? 'single' : videoCount === 2 ? 'dual' : 'multiple';
 
   return (
-    <div className="h-screen bg-black flex flex-col">
-      {/* Header */}
-      <header className="bg-black/90 border-b border-red-900/30 p-4 flex items-center justify-between">
+    <div className="h-screen bg-black flex flex-col commune-gradient-dark">
+      {/* Header anarchiste */}
+      <header className="bg-black/90 border-b border-red-600/40 p-4 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Logo className="h-8 w-auto" />
+          <Logo className="h-10 w-auto anarchist-glow" />
           <div>
-            <h1 className="text-lg font-semibold text-white">Salle: {roomId}</h1>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
-              <Users className="w-4 h-4" />
-              <span>{peers.size + 1} participant(s)</span>
+            <h1 className="text-lg font-semibold text-red-400">Cellule: {roomId}</h1>
+            <div className="flex items-center space-x-2 text-sm text-gray-300">
+              <Users className="w-4 h-4 text-red-500" />
+              <span>{peers.size + 1} révolutionnaire(s)</span>
               {isConnected && (
-                <Badge variant="outline" className="border-green-600 text-green-400 encrypted-indicator">
-                  <Lock className="w-3 h-3 mr-1" />
-                  E2EE
+                <Badge variant="outline" className="border-red-500 text-red-400 encrypted-indicator">
+                  <Shield className="w-3 h-3 mr-1" />
+                  E2EE Actif
                 </Badge>
               )}
             </div>
@@ -399,10 +401,10 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
             onClick={copyRoomLink}
             variant="outline"
             size="sm"
-            className="border-red-700 text-red-400 hover:bg-red-700 hover:text-white"
+            className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white commune-button"
           >
             <Copy className="w-4 h-4 mr-1" />
-            Copier le lien
+            Partager
           </Button>
           <Button
             onClick={() => setShowChat(!showChat)}
@@ -410,8 +412,8 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
             size="sm"
             className={cn(
               showChat 
-                ? "bg-red-700 text-white" 
-                : "border-red-700 text-red-400 hover:bg-red-700 hover:text-white"
+                ? "commune-button text-white" 
+                : "border-red-600 text-red-400 hover:bg-red-600 hover:text-white"
             )}
           >
             <MessageSquare className="w-4 h-4" />
@@ -426,7 +428,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
           <div className={cn("video-grid h-full", gridClass)}>
             {/* Local Video */}
             {localStream && (
-              <Card className="relative bg-gray-900 border-red-900/30 overflow-hidden">
+              <Card className="relative commune-card border-red-600/30 overflow-hidden">
                 <video
                   ref={localVideoRef}
                   autoPlay
@@ -434,12 +436,12 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                   playsInline
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 rounded text-sm text-white">
+                <div className="absolute bottom-2 left-2 bg-black/80 px-3 py-1 rounded text-sm text-red-400 border border-red-600/30">
                   {pseudo} (vous)
                 </div>
                 {!isVideoOn && (
-                  <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
-                    <VideoOff className="w-16 h-16 text-gray-400" />
+                  <div className="absolute inset-0 bg-black/90 flex items-center justify-center">
+                    <VideoOff className="w-16 h-16 text-red-400" />
                   </div>
                 )}
               </Card>
@@ -447,7 +449,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
 
             {/* Remote Videos */}
             {Array.from(peers.entries()).map(([id, peer]) => (
-              <Card key={id} className="relative bg-gray-900 border-red-900/30 overflow-hidden">
+              <Card key={id} className="relative commune-card border-red-600/30 overflow-hidden">
                 {peer.stream ? (
                   <video
                     autoPlay
@@ -460,28 +462,28 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gray-800">
+                  <div className="w-full h-full flex items-center justify-center bg-gray-900">
                     <div className="text-center">
-                      <Users className="w-16 h-16 text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-400">En attente...</p>
+                      <Users className="w-16 h-16 text-red-400 mx-auto mb-2" />
+                      <p className="text-red-400">En connexion...</p>
                     </div>
                   </div>
                 )}
-                <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 rounded text-sm text-white">
+                <div className="absolute bottom-2 left-2 bg-black/80 px-3 py-1 rounded text-sm text-red-400 border border-red-600/30">
                   {peer.pseudo}
                 </div>
               </Card>
             ))}
           </div>
 
-          {/* Controls */}
+          {/* Controls anarchistes */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
-            <div className="flex space-x-2 bg-black/80 backdrop-blur-sm rounded-full p-2">
+            <div className="flex space-x-2 bg-black/90 backdrop-blur-sm rounded-full p-3 border border-red-600/30">
               <Button
                 onClick={toggleVideo}
                 variant={isVideoOn ? "default" : "destructive"}
                 size="sm"
-                className={isVideoOn ? "bg-gray-700 hover:bg-gray-600" : ""}
+                className={isVideoOn ? "commune-button" : "bg-red-700 hover:bg-red-600"}
               >
                 {isVideoOn ? <Video className="w-4 h-4" /> : <VideoOff className="w-4 h-4" />}
               </Button>
@@ -490,7 +492,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                 onClick={toggleAudio}
                 variant={isAudioOn ? "default" : "destructive"}
                 size="sm"
-                className={isAudioOn ? "bg-gray-700 hover:bg-gray-600" : ""}
+                className={isAudioOn ? "commune-button" : "bg-red-700 hover:bg-red-600"}
               >
                 {isAudioOn ? <Mic className="w-4 h-4" /> : <MicOff className="w-4 h-4" />}
               </Button>
@@ -500,8 +502,8 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                 variant={isScreenSharing ? "default" : "outline"}
                 size="sm"
                 className={isScreenSharing 
-                  ? "bg-red-700 text-white" 
-                  : "border-gray-600 text-gray-300 hover:bg-gray-700"
+                  ? "commune-button" 
+                  : "border-red-600 text-red-400 hover:bg-red-600 hover:text-white"
                 }
               >
                 {isScreenSharing ? <MonitorOff className="w-4 h-4" /> : <Monitor className="w-4 h-4" />}
@@ -511,6 +513,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                 onClick={leaveRoom}
                 variant="destructive"
                 size="sm"
+                className="bg-red-700 hover:bg-red-600"
               >
                 <Phone className="w-4 h-4" />
               </Button>
@@ -518,21 +521,25 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
           </div>
         </div>
 
-        {/* Chat Sidebar */}
+        {/* Chat Sidebar anarchiste */}
         {showChat && (
-          <div className="w-80 bg-black/90 border-l border-red-900/30 flex flex-col">
-            <div className="p-4 border-b border-red-900/30">
+          <div className="w-80 commune-card border-l border-red-600/40 flex flex-col">
+            <div className="p-4 border-b border-red-600/30">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-white">Chat chiffré</h3>
+                <h3 className="font-semibold text-red-400">Chat révolutionnaire</h3>
                 <Button
                   onClick={() => setShowChat(false)}
                   variant="ghost"
                   size="sm"
+                  className="text-red-400 hover:bg-red-600/20"
                 >
                   <X className="w-4 h-4" />
                 </Button>
               </div>
-              <p className="text-xs text-gray-400 mt-1">Messages chiffrés E2EE</p>
+              <p className="text-xs text-gray-400 mt-1 flex items-center">
+                <Zap className="w-3 h-3 mr-1 text-red-500" />
+                Messages chiffrés E2EE
+              </p>
             </div>
             
             <ScrollArea className="flex-1 p-4">
@@ -548,20 +555,22 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                         {new Date(msg.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-300 break-words">{msg.message}</p>
+                    <p className="text-sm text-gray-300 break-words bg-black/40 p-2 rounded border border-red-600/20">
+                      {msg.message}
+                    </p>
                   </div>
                 ))}
                 <div ref={chatEndRef} />
               </div>
             </ScrollArea>
             
-            <div className="p-4 border-t border-red-900/30">
+            <div className="p-4 border-t border-red-600/30">
               <div className="flex space-x-2">
                 <Input
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Message chiffré..."
-                  className="bg-black/40 border-red-900/40 text-white placeholder-gray-500"
+                  placeholder="Message révolutionnaire..."
+                  className="commune-input text-white placeholder-gray-400"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
@@ -572,7 +581,7 @@ const VideoRoom: React.FC<VideoRoomProps> = ({ roomId }) => {
                 <Button
                   onClick={sendMessage}
                   size="sm"
-                  className="bg-red-700 hover:bg-red-600"
+                  className="commune-button"
                 >
                   <Send className="w-4 h-4" />
                 </Button>
