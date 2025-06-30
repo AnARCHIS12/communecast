@@ -57,16 +57,15 @@ io.on('connection', (socket) => {
     }
     
     const room = rooms.get(roomId);
-    
+    // Add user to room
+    room.add(socket.id);
+
     // Notify existing users in the room
     socket.to(roomId).emit('user-joined', {
       id: socket.id,
       pseudo
     });
-    
-    // Add user to room
-    room.add(socket.id);
-    
+
     // Notifier tous les clients du nombre d'utilisateurs
     io.to(roomId).emit('room-user-count', { roomId, count: room.size });
     
